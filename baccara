@@ -1,0 +1,62 @@
+import random
+
+
+def  draw_card():
+    values =['2','3','4','5','6','7','8','9','10','J','Q','K','A']
+    suits = ['harts','diamond','clubs','spades']
+    return {'suit': random.choice(suits), 'value': random.choice(values)}
+
+
+
+def calculate_score(hand):
+    score = 0
+    for card in hand :
+        value = card['value']
+        if value.isnumeric():
+            score += int(value)
+        elif value in ['J','Q','K']:
+            score +=10
+        else:
+            score +=1        
+
+    return score
+
+
+def play_baccarat():
+    player_hand = [draw_card(), draw_card()]
+    banker_hands = [draw_card(),draw_card()]
+
+    player_score = calculate_score(player_hand)
+    banker_score = calculate_score(banker_hands)
+
+    print(f'Player hands: {player_hand}- Score: {player_score}' )
+    print(f'Banker hands: {banker_hands}- Score: {banker_score}' )
+
+
+    if player_score > banker_score :
+        return 'Player'
+    elif player_score < banker_score:
+        return 'Banker'
+    else:
+        return 'tie'
+          
+
+
+def calcualte_win_parcentage(num_simulations):
+    player_wins =0
+    for _ in range(num_simulations):
+        winner = play_baccarat()
+        if winner == 'Player':
+            player_wins +=1
+
+    win_precentage = (player_wins/num_simulations) *100 
+    return win_precentage
+
+
+
+simulations  = 10000
+win_precentage = calcualte_win_parcentage(simulations)
+print(f"Player's win precenttage after {simulations} simulations: {win_precentage: .1f}%")
+
+
+
